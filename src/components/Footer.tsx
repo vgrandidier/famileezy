@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
+import { Home } from 'lucide-react';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -12,9 +12,10 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
-            <Link to="/" className="inline-block mb-4">
+            <Link to="/" className="inline-flex items-center gap-2 mb-4">
+              <Home className="h-6 w-6 text-famille-blue" />
               <span className="text-2xl font-bold bg-gradient-to-r from-famille-blue to-famille-purple text-transparent bg-clip-text">
-                FamilleHub
+                Famileezy
               </span>
             </Link>
             <p className="text-gray-600 max-w-sm">
@@ -68,7 +69,7 @@ const Footer = () => {
 
         <div className="mt-8 pt-6 border-t border-gray-200">
           <p className="text-gray-500 text-center text-sm">
-            &copy; {currentYear} FamilleHub. {t('footer.rights')}.
+            &copy; {currentYear} Famileezy. {t('footer.rights')}.
           </p>
         </div>
       </div>

@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Menu, X, User, LogOut } from 'lucide-react';
+import { Menu, X, User, LogOut, Home } from 'lucide-react';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -27,8 +27,9 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
+            <Home className="h-6 w-6 text-famille-blue" />
             <span className="text-2xl font-bold bg-gradient-to-r from-famille-blue to-famille-purple text-transparent bg-clip-text">
-              FamilleHub
+              Famileezy
             </span>
           </Link>
         </div>
