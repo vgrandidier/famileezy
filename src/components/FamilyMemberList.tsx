@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { User, UserPlus, Pencil, Trash2, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,8 @@ interface FamilyMember {
   email?: string;
   profilePicture?: string;
   profile: 'parent' | 'child';
+  pocketMoney?: string;
+  pocketMoneyFrequency?: 'weekly' | 'monthly';
 }
 
 interface FamilyMemberListProps {
@@ -123,6 +124,11 @@ const FamilyMemberList = ({ currentUser }: FamilyMemberListProps) => {
               </p>
               {member.email && (
                 <p className="text-sm text-muted-foreground">{member.email}</p>
+              )}
+              {member.profile === 'child' && member.pocketMoney && (
+                <p className="text-sm text-muted-foreground">
+                  Argent de poche : {member.pocketMoney}€ {member.pocketMoneyFrequency === 'weekly' ? 'par semaine' : 'par mois'}
+                </p>
               )}
             </div>
 

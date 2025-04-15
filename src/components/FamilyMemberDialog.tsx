@@ -9,7 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Upload } from 'lucide-react';
+import { Upload, Euro } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const formSchema = z.object({
   firstName: z.string().min(1, 'Le prénom est requis'),
@@ -17,6 +18,8 @@ const formSchema = z.object({
   email: z.string().email('Email invalide').optional().or(z.literal('')),
   profile: z.enum(['parent', 'child']),
   profilePicture: z.string().optional(),
+  pocketMoney: z.string().optional(),
+  pocketMoneyFrequency: z.enum(['weekly', 'monthly']).optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -31,6 +34,8 @@ interface FamilyMemberDialogProps {
     email?: string;
     profile: 'parent' | 'child';
     profilePicture?: string;
+    pocketMoney?: string;
+    pocketMoneyFrequency?: 'weekly' | 'monthly';
   } | null;
 }
 
@@ -48,8 +53,12 @@ const FamilyMemberDialog = ({
       email: '',
       profile: 'child',
       profilePicture: '',
+      pocketMoney: '',
+      pocketMoneyFrequency: 'monthly',
     },
   });
+
+  const isChild = form.watch('profile') === 'child';
 
   const handleSubmit = (values: FormValues) => {
     onSave(values);
@@ -159,6 +168,55 @@ const FamilyMemberDialog = ({
                 </FormItem>
               )}
             />
+
+            {isChild && (
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="pocketMoney"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Argent de poche (€)</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            {...field}
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            placeholder="Montant"
+                          />
+                          <Euro className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="pocketMoneyFrequency"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Fréquence</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Sélectionner la fréquence" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="weekly">Par semaine</SelectItem>
+                          <SelectItem value="monthly">Par mois</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
 
             <div className="flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
