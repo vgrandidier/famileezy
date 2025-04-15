@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -40,6 +39,9 @@ const Navbar = () => {
             <>
               <Link to="/dashboard" className="text-gray-700 hover:text-famille-blue transition-colors">
                 {t('nav.dashboard')}
+              </Link>
+              <Link to="/family" className="text-gray-700 hover:text-famille-blue transition-colors">
+                {t('nav.family')}
               </Link>
               
               <DropdownMenu>
