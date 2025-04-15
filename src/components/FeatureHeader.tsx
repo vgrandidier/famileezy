@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface FeatureHeaderProps {
   title: string;
@@ -13,6 +14,7 @@ interface FeatureHeaderProps {
 const FeatureHeader = ({ title, color }: FeatureHeaderProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { t } = useLanguage();
 
   return (
     <div 

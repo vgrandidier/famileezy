@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import Navbar from '@/components/Navbar';
@@ -90,7 +90,11 @@ const Dashboard = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {modules.map((module, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
+              <Card 
+                key={index} 
+                className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => navigate(module.link)}
+              >
                 <CardHeader className={`text-white ${module.color}`}>
                   <div className="flex items-center gap-2">
                     <module.icon className="h-6 w-6" />
@@ -101,15 +105,6 @@ const Dashboard = () => {
                   <CardDescription className="text-gray-600 mb-4">
                     {module.description}
                   </CardDescription>
-                  <Link 
-                    to={module.link} 
-                    className="text-famille-blue hover:underline inline-flex items-center"
-                  >
-                    Gérer
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="ml-1">
-                      <path d="M6.5 12.5L11 8L6.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </Link>
                 </CardContent>
               </Card>
             ))}

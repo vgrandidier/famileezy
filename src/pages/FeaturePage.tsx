@@ -4,6 +4,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import FeatureHeader from '@/components/FeatureHeader';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/context/AuthContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 // Define the features data structure with colors
 const featuresData = {
@@ -38,6 +39,7 @@ export type FeatureId = keyof typeof featuresData;
 const FeaturePage = () => {
   const { isAuthenticated } = useAuth();
   const { featureId } = useParams<{ featureId: string }>();
+  const { t } = useLanguage();
   
   // Redirect to login if not authenticated
   if (!isAuthenticated) {
@@ -50,15 +52,16 @@ const FeaturePage = () => {
   }
 
   const feature = featuresData[featureId as FeatureId];
+  const translatedTitle = t(`features.${featureId}.title`);
 
   return (
     <div className="flex flex-col min-h-screen">
-      <FeatureHeader title={feature.title} color={feature.color} />
+      <FeatureHeader title={translatedTitle} color={feature.color} />
       <main className="flex-grow p-4">
         <div className="container mx-auto">
-          <h2 className="text-2xl font-bold mb-4">{feature.title}</h2>
+          <h2 className="text-2xl font-bold mb-4">{translatedTitle}</h2>
           <p className="text-muted-foreground">
-            This feature is coming soon. Check back later for updates!
+            {t('features.comingSoon', 'This feature is coming soon. Check back later for updates!')}
           </p>
         </div>
       </main>

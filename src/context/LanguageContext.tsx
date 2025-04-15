@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
 type Language = 'fr' | 'en' | 'es' | 'it';
@@ -5,7 +6,7 @@ type Language = 'fr' | 'en' | 'es' | 'it';
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, fallback?: string) => string;
 }
 
 const translations = {
@@ -37,6 +38,7 @@ const translations = {
     "features.calendar.description": "Coordonnez les emplois du temps de toute la famille",
     "features.tasks.title": "Tâches ménagères",
     "features.tasks.description": "Distribuez et suivez les tâches ménagères pour toute la famille",
+    "features.comingSoon": "Cette fonctionnalité arrive bientôt. Revenez plus tard pour voir les mises à jour !",
     
     // Auth forms
     "auth.email": "Email",
@@ -94,6 +96,7 @@ const translations = {
     "features.calendar.description": "Coordinate schedules for the entire family",
     "features.tasks.title": "Household Chores",
     "features.tasks.description": "Distribute and track household chores for the whole family",
+    "features.comingSoon": "This feature is coming soon. Check back later for updates!",
     
     // Auth forms
     "auth.email": "Email",
@@ -151,6 +154,7 @@ const translations = {
     "features.calendar.description": "Coordina horarios para toda la familia",
     "features.tasks.title": "Tareas domésticas",
     "features.tasks.description": "Distribuye y controla las tareas domésticas para toda la familia",
+    "features.comingSoon": "Esta función estará disponible pronto. ¡Vuelve más tarde para ver las actualizaciones!",
     
     // Auth forms
     "auth.email": "Correo electrónico",
@@ -208,6 +212,7 @@ const translations = {
     "features.calendar.description": "Coordina gli orari per tutta la famiglia",
     "features.tasks.title": "Faccende domestiche",
     "features.tasks.description": "Distribuisci e monitora le faccende domestiche per tutta la famiglia",
+    "features.comingSoon": "Questa funzionalità sarà disponibile presto. Torna più tardi per gli aggiornamenti!",
     
     // Auth forms
     "auth.email": "Email",
@@ -256,9 +261,9 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('language', newLanguage);
   };
 
-  const t = (key: string): string => {
+  const t = (key: string, fallback?: string): string => {
     // @ts-ignore
-    return translations[language][key] || key;
+    return translations[language][key] || fallback || key;
   };
 
   return (
