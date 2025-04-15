@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
 type Language = 'fr' | 'en' | 'es' | 'it';
@@ -18,6 +17,7 @@ const translations = {
     "nav.profile": "Profil",
     "nav.dashboard": "Tableau de bord",
     "nav.logout": "Déconnexion",
+    "nav.family": "Famille",
     
     // Landing page
     "landing.hero.title": "Gérez votre vie de famille en toute simplicité",
@@ -74,6 +74,7 @@ const translations = {
     "nav.profile": "Profile",
     "nav.dashboard": "Dashboard",
     "nav.logout": "Logout",
+    "nav.family": "Family",
     
     // Landing page
     "landing.hero.title": "Manage your family life with ease",
@@ -130,6 +131,7 @@ const translations = {
     "nav.profile": "Perfil",
     "nav.dashboard": "Panel",
     "nav.logout": "Cerrar sesión",
+    "nav.family": "Familia",
     
     // Landing page
     "landing.hero.title": "Gestiona tu vida familiar con facilidad",
@@ -186,6 +188,7 @@ const translations = {
     "nav.profile": "Profilo",
     "nav.dashboard": "Dashboard",
     "nav.logout": "Uscita",
+    "nav.family": "Famiglia",
     
     // Landing page
     "landing.hero.title": "Gestisci la tua vita familiare con facilità",
