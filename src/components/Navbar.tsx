@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -123,6 +124,13 @@ const Navbar = () => {
                   onClick={closeMenu}
                 >
                   {t('nav.dashboard')}
+                </Link>
+                <Link 
+                  to="/family" 
+                  className="text-gray-700 hover:text-famille-blue transition-colors px-3 py-2"
+                  onClick={closeMenu}
+                >
+                  {t('nav.family')}
                 </Link>
                 <Link 
                   to="/profile" 
