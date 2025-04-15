@@ -1,12 +1,13 @@
 
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PiggyBank, DollarSign, ChefHat, Sun, Calendar, ClipboardList } from 'lucide-react';
+import { featuresData, FeatureId } from './FeaturePage';
 
 const Dashboard = () => {
   const { isAuthenticated, user } = useAuth();
@@ -30,42 +31,48 @@ const Dashboard = () => {
       description: t('features.pocketMoney.description'),
       icon: PiggyBank,
       color: 'bg-famille-purple',
-      link: '#',
+      link: '/feature/pocket-money',
+      id: 'pocket-money' as FeatureId,
     },
     {
       title: t('features.budget.title'),
       description: t('features.budget.description'),
       icon: DollarSign,
       color: 'bg-famille-blue',
-      link: '#',
+      link: '/feature/budget',
+      id: 'budget' as FeatureId,
     },
     {
       title: t('features.recipes.title'),
       description: t('features.recipes.description'),
       icon: ChefHat,
       color: 'bg-famille-orange',
-      link: '#',
+      link: '/feature/recipes',
+      id: 'recipes' as FeatureId,
     },
     {
       title: t('features.solar.title'),
       description: t('features.solar.description'),
       icon: Sun,
       color: 'bg-famille-yellow',
-      link: '#',
+      link: '/feature/solar',
+      id: 'solar' as FeatureId,
     },
     {
       title: t('features.calendar.title'),
       description: t('features.calendar.description'),
       icon: Calendar,
       color: 'bg-famille-teal',
-      link: '#',
+      link: '/feature/calendar',
+      id: 'calendar' as FeatureId,
     },
     {
       title: t('features.tasks.title'),
       description: t('features.tasks.description'),
       icon: ClipboardList,
       color: 'bg-famille-pink',
-      link: '#',
+      link: '/feature/tasks',
+      id: 'tasks' as FeatureId,
     },
   ];
 
@@ -94,15 +101,15 @@ const Dashboard = () => {
                   <CardDescription className="text-gray-600 mb-4">
                     {module.description}
                   </CardDescription>
-                  <a 
-                    href={module.link} 
+                  <Link 
+                    to={module.link} 
                     className="text-famille-blue hover:underline inline-flex items-center"
                   >
                     Gérer
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="ml-1">
                       <path d="M6.5 12.5L11 8L6.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                  </a>
+                  </Link>
                 </CardContent>
               </Card>
             ))}
