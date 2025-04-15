@@ -9,6 +9,7 @@ interface FeatureCardProps {
   icon: LucideIcon;
   color: string;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 const FeatureCard = ({
@@ -17,13 +18,17 @@ const FeatureCard = ({
   icon: Icon,
   color,
   className,
+  style,
 }: FeatureCardProps) => {
   return (
-    <div className={cn(
-      "famille-card p-6 flex flex-col items-center text-center",
-      "transform hover:scale-105 transition-all duration-300",
-      className
-    )}>
+    <div 
+      className={cn(
+        "famille-card p-6 flex flex-col items-center text-center",
+        "transform hover:scale-105 transition-all duration-300",
+        className
+      )}
+      style={style}
+    >
       <div className={`feature-icon mb-4 ${color}`}>
         <Icon className="h-full w-full" />
       </div>
