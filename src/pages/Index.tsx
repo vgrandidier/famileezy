@@ -24,8 +24,8 @@ const Index = () => {
 
   const features = [
     {
-      title: t('features.pocketMoney.title'),
-      description: t('features.pocketMoney.description'),
+      title: t('features.pocket-money.title'),
+      description: t('features.pocket-money.description'),
       icon: PiggyBank,
       color: 'bg-famille-purple',
     },

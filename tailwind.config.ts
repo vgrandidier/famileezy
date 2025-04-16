@@ -72,7 +72,13 @@ export default {
 					yellow: '#FFBE0B',
 					teal: '#06D6A0',
 					dark: '#212529',
-					light: '#F8F9FA'
+					light: '#F8F9FA',
+					money: '#41AFAA',
+					budget: '#466EB4',
+					recipe: '#00A0E1',
+					solar: '#E6A532',
+					calendar: '#D7642C',
+					task: '#AF4B91'
 				}
 			},
 			borderRadius: {

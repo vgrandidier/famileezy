@@ -18,7 +18,7 @@ const translations = {
     "nav.profile": "Profil",
     "nav.dashboard": "Tableau de bord",
     "nav.logout": "Déconnexion",
-    "nav.family": "Famille",
+    "nav.family": "Ma Famille",
     
     // Landing page
     "landing.hero.title": "Gérez votre vie de famille en toute simplicité",
@@ -26,8 +26,8 @@ const translations = {
     "landing.hero.cta": "Commencer gratuitement",
     
     // Features
-    "features.pocketMoney.title": "Argent de poche",
-    "features.pocketMoney.description": "Gérez l'argent de poche de vos enfants et suivez leurs économies",
+    "features.pocket-money.title": "Argent de poche",
+    "features.pocket-money.description": "Gérez l'argent de poche de vos enfants et suivez leurs économies",
     "features.budget.title": "Budget familial",
     "features.budget.description": "Planifiez et suivez les dépenses de toute la famille",
     "features.recipes.title": "Recettes",
@@ -76,7 +76,7 @@ const translations = {
     "nav.profile": "Profile",
     "nav.dashboard": "Dashboard",
     "nav.logout": "Logout",
-    "nav.family": "Family",
+    "nav.family": "My Family",
     
     // Landing page
     "landing.hero.title": "Manage your family life with ease",
@@ -84,8 +84,8 @@ const translations = {
     "landing.hero.cta": "Start for free",
     
     // Features
-    "features.pocketMoney.title": "Pocket Money",
-    "features.pocketMoney.description": "Manage your children's pocket money and track their savings",
+    "features.pocket-money.title": "Pocket Money",
+    "features.pocket-money.description": "Manage your children's pocket money and track their savings",
     "features.budget.title": "Family Budget",
     "features.budget.description": "Plan and track expenses for the entire family",
     "features.recipes.title": "Recipes",
@@ -142,8 +142,8 @@ const translations = {
     "landing.hero.cta": "Comenzar gratis",
     
     // Features
-    "features.pocketMoney.title": "Dinero de bolsillo",
-    "features.pocketMoney.description": "Gestiona el dinero de bolsillo de tus hijos y controla sus ahorros",
+    "features.pocket-money.title": "Dinero de bolsillo",
+    "features.pocket-money.description": "Gestiona el dinero de bolsillo de tus hijos y controla sus ahorros",
     "features.budget.title": "Presupuesto familiar",
     "features.budget.description": "Planifica y controla los gastos de toda la familia",
     "features.recipes.title": "Recetas",
@@ -200,8 +200,8 @@ const translations = {
     "landing.hero.cta": "Inizia gratuitamente",
     
     // Features
-    "features.pocketMoney.title": "Paghetta",
-    "features.pocketMoney.description": "Gestisci la paghetta dei tuoi figli e tieni traccia dei loro risparmi",
+    "features.pocket-money.title": "Paghetta",
+    "features.pocket-money.description": "Gestisci la paghetta dei tuoi figli e tieni traccia dei loro risparmi",
     "features.budget.title": "Budget familiare",
     "features.budget.description": "Pianifica e tieni traccia delle spese per tutta la famiglia",
     "features.recipes.title": "Ricette",

@@ -10,27 +10,27 @@ import { useLanguage } from '@/context/LanguageContext';
 const featuresData = {
   'pocket-money': {
     title: 'Pocket Money',
-    color: '#7209B7', // famille-purple
+    color: '#41AFAA', // famille-money
   },
   'budget': {
     title: 'Family Budget',
-    color: '#4361EE', // famille-blue
+    color: '#466EB4', // famille-budget
   },
   'recipes': {
     title: 'Family Recipes',
-    color: '#FB8500', // famille-orange
+    color: '#00A0E1', // famille-recipe
   },
   'solar': {
     title: 'Solar Panels',
-    color: '#FFBE0B', // famille-yellow
+    color: '#E6A532', // famille-solar
   },
   'calendar': {
     title: 'Family Calendar',
-    color: '#06D6A0', // famille-teal
+    color: '#D7642C', // famille-calendar
   },
   'tasks': {
     title: 'Tasks & Chores',
-    color: '#F72585', // famille-pink
+    color: '#AF4B91', // famille-task
   },
 };
 
