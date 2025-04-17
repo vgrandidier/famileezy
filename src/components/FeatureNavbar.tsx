@@ -14,9 +14,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Menu, X, User, LogOut, Home, HeartHandshake } from 'lucide-react';
+import { User, LogOut, ArrowLeft, Menu, X, LucideIcon } from 'lucide-react';
 
-const Navbar = () => {
+interface FeatureNavbarProps {
+  featureTitle: string;
+  featureIcon: LucideIcon;
+  backgroundColor: string;
+}
+
+const FeatureNavbar = ({ featureTitle, featureIcon: FeatureIcon, backgroundColor }: FeatureNavbarProps) => {
   const { isAuthenticated, user, logout } = useAuth();
   const { t } = useLanguage();
   const { openDrawer } = useFamilyDrawer();
@@ -27,37 +33,41 @@ const Navbar = () => {
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <header className="w-full bg-white shadow-sm sticky top-0 z-50">
+    <header className="w-full shadow-sm sticky top-0 z-50" style={{ backgroundColor }}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center">
-          <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
-            <HeartHandshake className="h-6 w-6 text-famille-blue" />
-            <span className="text-2xl font-bold bg-gradient-to-r from-famille-blue to-famille-purple text-transparent bg-clip-text">
-              Famileezy
-            </span>
+          <Link to="/dashboard" className="flex items-center mr-3 text-white">
+            <ArrowLeft className="h-5 w-5" />
           </Link>
+          
+          <div className="flex items-center gap-2">
+            <FeatureIcon className="h-6 w-6 text-white" />
+            <span className="text-xl font-bold text-white">
+              {featureTitle}
+            </span>
+          </div>
         </div>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-6">
           {isAuthenticated ? (
             <>
-              <Link to="/dashboard" className="text-gray-700 hover:text-famille-blue transition-colors">
+              <Link to="/dashboard" className="text-white hover:text-white/90 transition-colors">
                 {t('nav.dashboard')}
               </Link>
               <button
                 onClick={openDrawer}
-                className="text-gray-700 hover:text-famille-blue transition-colors"
+                className="text-white hover:text-white/90 transition-colors"
               >
                 {t('nav.family')}
               </button>
               
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full border-2 border-white">
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={user?.profilePicture || '/placeholder.svg'} alt={user?.firstName} />
-                      <AvatarFallback className="bg-famille-purple text-white">
+                      <AvatarFallback className="bg-white text-[color:var(--color)]" style={{ '--color': backgroundColor } as React.CSSProperties}>
                         {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
@@ -85,10 +95,10 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="text-gray-700 hover:text-famille-blue transition-colors">
+              <Link to="/login" className="text-white hover:text-white/90 transition-colors">
                 {t('nav.login')}
               </Link>
-              <Button asChild className="bg-famille-blue hover:bg-famille-blue/90">
+              <Button asChild className="bg-white text-[color:var(--color)] hover:bg-white/90" style={{ '--color': backgroundColor } as React.CSSProperties}>
                 <Link to="/signup">
                   {t('nav.signup')}
                 </Link>
@@ -98,10 +108,10 @@ const Navbar = () => {
           <LanguageSwitcher />
         </nav>
 
-        {/* Mobile Nav */}
+        {/* Mobile Nav - Adapté pour prendre en compte les couleurs personnalisées */}
         <div className="flex md:hidden items-center gap-2">
           <LanguageSwitcher />
-          <Button variant="ghost" size="icon" onClick={toggleMenu} className="text-gray-700">
+          <Button variant="ghost" size="icon" onClick={toggleMenu} className="text-white">
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </div>
@@ -116,7 +126,7 @@ const Navbar = () => {
                 <div className="flex items-center gap-3 p-3 bg-muted rounded-md">
                   <Avatar className="h-10 w-10">
                     <AvatarImage src={user?.profilePicture || '/placeholder.svg'} alt={user?.firstName} />
-                    <AvatarFallback className="bg-famille-purple text-white">
+                    <AvatarFallback style={{ backgroundColor }} className="text-white">
                       {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
@@ -173,7 +183,8 @@ const Navbar = () => {
                 </Link>
                 <Link 
                   to="/signup" 
-                  className="bg-famille-blue text-white hover:bg-famille-blue/90 px-3 py-2 rounded-md text-center"
+                  style={{ backgroundColor }}
+                  className="text-white px-3 py-2 rounded-md text-center"
                   onClick={closeMenu}
                 >
                   {t('nav.signup')}
@@ -187,4 +198,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default FeatureNavbar;

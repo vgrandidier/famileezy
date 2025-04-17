@@ -1,36 +1,42 @@
-
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import FeatureHeader from '@/components/FeatureHeader';
 import Footer from '@/components/Footer';
+import FeatureNavbar from '@/components/FeatureNavbar';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { PiggyBank, DollarSign, ChefHat, Sun, Calendar, ClipboardList, LucideIcon } from 'lucide-react';
 
-// Define the features data structure with colors
-const featuresData = {
+// Define the features data structure with colors and icons
+export const featuresData = {
   'pocket-money': {
     title: 'Pocket Money',
     color: '#41AFAA', // famille-money
+    icon: PiggyBank,
   },
   'budget': {
     title: 'Family Budget',
     color: '#466EB4', // famille-budget
+    icon: DollarSign,
   },
   'recipes': {
     title: 'Family Recipes',
     color: '#00A0E1', // famille-recipe
+    icon: ChefHat,
   },
   'solar': {
     title: 'Solar Panels',
     color: '#E6A532', // famille-solar
+    icon: Sun,
   },
   'calendar': {
     title: 'Family Calendar',
     color: '#D7642C', // famille-calendar
+    icon: Calendar,
   },
   'tasks': {
     title: 'Tasks & Chores',
     color: '#AF4B91', // famille-task
+    icon: ClipboardList,
   },
 };
 
@@ -53,10 +59,15 @@ const FeaturePage = () => {
 
   const feature = featuresData[featureId as FeatureId];
   const translatedTitle = t(`features.${featureId}.title`);
+  const Icon = feature.icon;
 
   return (
     <div className="flex flex-col min-h-screen">
-      <FeatureHeader title={translatedTitle} color={feature.color} />
+      <FeatureNavbar 
+        featureTitle={translatedTitle} 
+        featureIcon={Icon} 
+        backgroundColor={feature.color}
+      />
       <main className="flex-grow p-4">
         <div className="container mx-auto">
           <h2 className="text-2xl font-bold mb-4">{translatedTitle}</h2>
@@ -71,6 +82,3 @@ const FeaturePage = () => {
 };
 
 export default FeaturePage;
-
-// Export the features data so it can be used elsewhere
-export { featuresData };

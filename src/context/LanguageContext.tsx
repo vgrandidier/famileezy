@@ -61,6 +61,13 @@ const translations = {
     "profile.save": "Enregistrer",
     "profile.picture": "Photo de profil",
     "profile.uploadPicture": "Télécharger une nouvelle photo",
+    "profile.clickToUpload": "Cliquez sur l'icône pour changer la photo",
+    "profile.cropImage": "Recadrer l'image",
+    
+    // Common
+    "common.save": "Sauvegarder",
+    "common.cancel": "Annuler",
+    "common.confirm": "Confirmer",
     
     // Footer
     "footer.rights": "Tous droits réservés",
@@ -119,6 +126,13 @@ const translations = {
     "profile.save": "Save",
     "profile.picture": "Profile picture",
     "profile.uploadPicture": "Upload new picture",
+    "profile.clickToUpload": "Click the icon to change photo",
+    "profile.cropImage": "Crop Image",
+    
+    // Common
+    "common.save": "Save",
+    "common.cancel": "Cancel",
+    "common.confirm": "Confirm",
     
     // Footer
     "footer.rights": "All rights reserved",
@@ -177,6 +191,13 @@ const translations = {
     "profile.save": "Guardar",
     "profile.picture": "Foto de perfil",
     "profile.uploadPicture": "Subir nueva foto",
+    "profile.clickToUpload": "Haga clic en el icono para cambiar la foto",
+    "profile.cropImage": "Recortar imagen",
+    
+    // Common
+    "common.save": "Guardar",
+    "common.cancel": "Cancelar",
+    "common.confirm": "Confirmar",
     
     // Footer
     "footer.rights": "Todos los derechos reservados",
@@ -235,6 +256,13 @@ const translations = {
     "profile.save": "Salva",
     "profile.picture": "Foto profilo",
     "profile.uploadPicture": "Carica nuova foto",
+    "profile.clickToUpload": "Clicca sull'icona per cambiare la foto",
+    "profile.cropImage": "Ritaglia immagine",
+    
+    // Common
+    "common.save": "Salva",
+    "common.cancel": "Annulla",
+    "common.confirm": "Conferma",
     
     // Footer
     "footer.rights": "Tutti i diritti riservati",
