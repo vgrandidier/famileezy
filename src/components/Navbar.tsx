@@ -31,7 +31,8 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
-            <HeartHandshake className="h-6 w-6 text-famille-blue" />
+            <img src='../public/logos/famileezy-logo-4.png' alt="Logo" />
+            {/*<HeartHandshake className="h-6 w-6 text-famille-blue" />*/}
             <span className="text-2xl font-bold bg-gradient-to-r from-famille-blue to-famille-purple text-transparent bg-clip-text">
               Famileezy
             </span>

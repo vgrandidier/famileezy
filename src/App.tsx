@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { FamilyProvider } from "@/context/FamilyContext";
 import { FamilyDrawerProvider, useFamilyDrawer } from "@/context/FamilyDrawerContext";
 import { ProfileDrawerProvider, useProfileDrawer } from "@/context/ProfileDrawerContext";
 import Index from "./pages/Index";
@@ -24,19 +25,21 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <LanguageProvider>
-          <FamilyDrawerProvider>
-            <ProfileDrawerProvider>
-              <TooltipProvider>
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                  <AppContent />
-                </BrowserRouter>
-              </TooltipProvider>
-            </ProfileDrawerProvider>
-          </FamilyDrawerProvider>
-        </LanguageProvider>
+        <FamilyProvider>
+          <LanguageProvider>
+            <FamilyDrawerProvider>
+              <ProfileDrawerProvider>
+                <TooltipProvider>
+                  <Toaster />
+                  <Sonner />
+                  <BrowserRouter>
+                    <AppContent />
+                  </BrowserRouter>
+                </TooltipProvider>
+              </ProfileDrawerProvider>
+            </FamilyDrawerProvider>
+          </LanguageProvider>
+        </FamilyProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
