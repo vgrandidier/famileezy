@@ -5,21 +5,21 @@ import { Upload, Loader2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import ImageCropper from './ImageCropper';
 
-interface ProfilePhotoUploaderProps {
-  userId: string;
+interface MemberPhotoUploaderProps {
+  memberId: string;
   currentPhotoUrl?: string;
   firstName?: string;
   lastName?: string;
   onPhotoUpdated?: (url: string) => void;
 }
 
-const ProfilePhotoUploader = ({ 
-  userId, 
+const MemberPhotoUploader = ({ 
+  memberId, 
   currentPhotoUrl,
   firstName = '',
   lastName = '',
   onPhotoUpdated
-}: ProfilePhotoUploaderProps) => {
+}: MemberPhotoUploaderProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -59,7 +59,7 @@ const ProfilePhotoUploader = ({
       // Dans une vraie application, on uploadrait ici l'image recadrée vers Firebase
       // Mais pour simplifier et éviter les problèmes, on utilise directement l'URL du blob
       
-      // Notifier le parent du changement
+      // Notifier le parent du changement avec l'URL du blob
       if (onPhotoUpdated) {
         onPhotoUpdated(croppedImageUrl);
       }
@@ -67,7 +67,7 @@ const ProfilePhotoUploader = ({
       // Notification de succès
       toast({
         title: "Photo ajoutée",
-        description: "La photo de profil a été mise à jour avec succès.",
+        description: "La photo du membre a été mise à jour avec succès.",
       });
       
       // Fermer le cropper
@@ -101,7 +101,7 @@ const ProfilePhotoUploader = ({
           <Avatar className="h-24 w-24">
             <AvatarImage 
               src={currentPhotoUrl} 
-              alt={`Photo de profil de ${firstName} ${lastName}`}
+              alt={`Photo de ${firstName} ${lastName}`}
             />
             <AvatarFallback className="bg-famille-purple text-white text-xl">
               {firstName.charAt(0)}{lastName.charAt(0)}
@@ -148,4 +148,4 @@ const ProfilePhotoUploader = ({
   );
 };
 
-export default ProfilePhotoUploader;
+export default MemberPhotoUploader;

@@ -61,6 +61,7 @@ const UserProfileForm = () => {
   };
 
   const handlePhotoUpdated = (url: string) => {
+    console.log("Photo mise à jour dans UserProfileForm:", url);
     setProfilePicture(url);
   };
 
@@ -74,7 +75,7 @@ const UserProfileForm = () => {
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-6">
-          {/* Photo de profil - Utilisation du composant autonome */}
+          {/* Photo de profil - Utilisation du composant amélioré */}
           {user && (
             <ProfilePhotoUploader 
               userId={user.id}

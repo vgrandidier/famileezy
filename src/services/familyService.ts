@@ -1,17 +1,18 @@
 import { 
-    collection,
-    doc,
-    getDoc,
-    getDocs,
-    addDoc,
-    updateDoc,
-    deleteDoc,
-    query,
-    where,
-    serverTimestamp,
-    Timestamp
-  } from "firebase/firestore";
-  import { db } from "@/lib/firebase";
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  serverTimestamp,
+  Timestamp
+} from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db, storage } from "@/lib/firebase";
   
   // Types pour les permissions de modules
   export type ModulePermissions = {
@@ -348,3 +349,82 @@ import {
       throw error;
     }
   };
+
+ // Ajoutez ceci à la fin de votre fichier familyService.ts
+// Assurez-vous que ces imports sont présents au début du fichier:
+// import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// import { db, storage } from "@/lib/firebase";
+
+/**
+ * Télécharge une photo de profil pour un membre de famille
+ */
+export const uploadFamilyMemberPhoto = async (
+  memberId: string, 
+  file: File
+): Promise<string> => {
+  try {
+    console.log("Début de l'upload de la photo de membre de famille");
+    
+    // 1. Récupérer les infos du membre pour obtenir l'ID de la famille
+    const memberRef = doc(db, "familyMembers", memberId);
+    const memberDoc = await getDoc(memberRef);
+    
+    if (!memberDoc.exists()) {
+      throw new Error("Membre non trouvé");
+    }
+    
+    const familyId = memberDoc.data().familyId;
+    
+    // 2. Créer une référence de stockage
+    const fileExtension = file.name.split('.').pop() || 'jpg';
+    const fileName = `member_${memberId}_${Date.now()}.${fileExtension}`;
+    const storageRef = ref(storage, `family_members/${familyId}/${fileName}`);
+    
+    console.log("Référence de stockage créée");
+    
+    // 3. Télécharger le fichier
+    const snapshot = await uploadBytes(storageRef, file);
+    console.log("Fichier téléchargé vers Firebase Storage");
+    
+    // 4. Obtenir l'URL
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    console.log("URL de téléchargement obtenue:", downloadURL);
+    
+    // 5. Mettre à jour le document du membre
+    await updateDoc(memberRef, {
+      profilePicture: downloadURL,
+      updatedAt: serverTimestamp()
+    });
+    console.log("Photo de profil du membre mise à jour dans Firestore");
+    
+    return downloadURL;
+  } catch (error) {
+    console.error("Erreur lors du téléchargement de la photo du membre:", error);
+    throw error;
+  }
+};
+
+/**
+ * Télécharge une photo de profil déjà recadrée pour un membre de famille
+ */
+export const uploadCroppedFamilyMemberPhoto = async (
+  memberId: string, 
+  croppedBlob: Blob,
+  originalFileName: string = 'cropped.jpg'
+): Promise<string> => {
+  try {
+    console.log("Début de l'upload de la photo recadrée pour le membre");
+    
+    // 1. Convertir le Blob en File
+    const fileExtension = originalFileName.split('.').pop() || 'jpg';
+    const file = new File([croppedBlob], `member_${Date.now()}.${fileExtension}`, {
+      type: croppedBlob.type || 'image/jpeg',
+    });
+    
+    // 2. Utiliser la fonction standard pour terminer l'upload
+    return await uploadFamilyMemberPhoto(memberId, file);
+  } catch (error) {
+    console.error("Erreur lors du téléchargement de l'image recadrée du membre:", error);
+    throw error;
+  }
+};

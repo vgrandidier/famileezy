@@ -61,8 +61,17 @@ const FamilyMemberList = () => {
 
     try {
       await removeMember(memberId);
+      toast({
+        title: "Membre supprimé",
+        description: "Le membre a été supprimé avec succès."
+      });
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
+      toast({
+        title: "Erreur de suppression",
+        description: "Impossible de supprimer ce membre.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -75,15 +84,26 @@ const FamilyMemberList = () => {
     try {
       await sendInvitation(memberId);
       
-      // L'état sera mis à jour automatiquement via le contexte de famille
+      // Mettre à jour l'état
+      toast({
+        title: "Invitation envoyée",
+        description: `Une invitation a été envoyée à ${email}.`,
+      });
+      
+      // On garde l'icône de chargement un instant pour l'UX
       setTimeout(() => {
         setInvitationSending(prev => ({
           ...prev,
           [memberId]: false
         }));
-      }, 5000);
+      }, 1000);
     } catch (error) {
       console.error("Erreur lors de l'envoi de l'invitation:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'envoyer l'invitation.",
+        variant: "destructive",
+      });
       setInvitationSending(prev => ({
         ...prev,
         [memberId]: false
@@ -91,90 +111,50 @@ const FamilyMemberList = () => {
     }
   };
 
-  const onSaveMember = async (memberData: any) => {
+  // Gérer la sauvegarde d'un membre
+  const handleSaveMember = async (memberData: any) => {
     try {
       if (selectedMember) {
-        // Mise à jour d'un membre existant
-        await updateMember(selectedMember.id, memberData);
+        // MISE À JOUR: Vérification spéciale pour le compte utilisateur
+        if (selectedMember.email === user?.email && selectedMember.profile === 'parent') {
+          // Pour le membre propriétaire, on limite les champs à mettre à jour
+          const safeUpdates = {
+            firstName: memberData.firstName,
+            lastName: memberData.lastName,
+            profilePicture: memberData.profilePicture
+          };
+          
+          console.log("Mise à jour limitée pour le propriétaire:", safeUpdates);
+          await updateMember(selectedMember.id, safeUpdates);
+        } else {
+          // Pour les autres membres, mise à jour complète
+          await updateMember(selectedMember.id, memberData);
+        }
+        
+        toast({
+          title: "Membre mis à jour",
+          description: "Les informations du membre ont été mises à jour avec succès."
+        });
       } else {
         // Ajout d'un nouveau membre
         await addMember(memberData);
+        toast({
+          title: "Membre ajouté",
+          description: "Le nouveau membre a été ajouté avec succès."
+        });
       }
+      
       setIsDialogOpen(false);
     } catch (error) {
-      console.error("Erreur lors de l'enregistrement:", error);
-    }
-  };
-
-  // Fonction pour afficher les icônes des modules avec leur état d'accès
-  const renderModuleIcons = (member: any) => {
-    if (member.profile !== 'child' || !member.modulePermissions) {
-      return null;
-    }
-    
-    return (
-      <div className="flex flex-wrap gap-1 my-2">
-        <TooltipProvider>
-          {Object.entries(featuresData).map(([id, feature]) => {
-            const hasAccess = member.modulePermissions?.[id as keyof ModulePermissions];
-            
-            // Ne montrer que les modules autorisés
-            if (!hasAccess) return null;
-            
-            const Icon = feature.icon;
-            
-            return (
-              <Tooltip key={id}>
-                <TooltipTrigger asChild>
-                  <div className="relative inline-block">
-                    <div 
-                      className="p-1 rounded-md flex items-center justify-center"
-                      style={{ backgroundColor: `${feature.color}20` }}
-                    >
-                      <Icon 
-                        size={16} 
-                        style={{ color: feature.color }} 
-                      />
-                    </div>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{t(`features.${id}.title`, feature.title)}</p>
-                </TooltipContent>
-              </Tooltip>
-            );
-          })}
-        </TooltipProvider>
-      </div>
-    );
-  };
-
-  // Dans FamilyMemberList.tsx
-  const handleUpdateMember = async (memberData) => {
-    try {
-      // Vérifier si c'est le membre principal (votre propre profil)
-      if (memberData.email === user?.email && memberData.profile === 'parent') {
-        // Pour le membre principal, mettre à jour uniquement certains champs
-        // Ne pas modifier l'email ou le statut parent/enfant
-        const safeUpdates = {
-          firstName: memberData.firstName,
-          lastName: memberData.lastName,
-          profilePicture: memberData.profilePicture
-        };
-        await updateMember(memberData.id, safeUpdates);
-      } else {
-        // Pour les autres membres, mise à jour normale
-        await updateMember(memberData.id, memberData);
-      }
-    } catch (error) {
-      console.error("Erreur détaillée:", error);
+      console.error("Erreur lors de la sauvegarde:", error);
       toast({
-        title: "Échec de la mise à jour",
-        description: "Impossible de mettre à jour le membre.",
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la sauvegarde.",
         variant: "destructive",
       });
+      // Ne pas fermer le dialogue en cas d'erreur pour permettre de réessayer
     }
-  }
+  };
 
   if (!currentFamily) {
     return (
@@ -229,7 +209,41 @@ const FamilyMemberList = () => {
               )}
               
               {/* Affichage des icônes de modules */}
-              {renderModuleIcons(member)}
+              {member.profile === 'child' && member.modulePermissions && (
+                <div className="flex flex-wrap gap-1 my-2">
+                  <TooltipProvider>
+                    {Object.entries(featuresData).map(([id, feature]) => {
+                      const hasAccess = member.modulePermissions?.[id as keyof ModulePermissions];
+                      
+                      // Ne montrer que les modules autorisés
+                      if (!hasAccess) return null;
+                      
+                      const Icon = feature.icon;
+                      
+                      return (
+                        <Tooltip key={id}>
+                          <TooltipTrigger asChild>
+                            <div className="relative inline-block">
+                              <div 
+                                className="p-1 rounded-md flex items-center justify-center"
+                                style={{ backgroundColor: `${feature.color}20` }}
+                              >
+                                <Icon 
+                                  size={16} 
+                                  style={{ color: feature.color }} 
+                                />
+                              </div>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{t(`features.${id}.title`, feature.title)}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      );
+                    })}
+                  </TooltipProvider>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-wrap justify-center sm:justify-end gap-2">
@@ -278,7 +292,7 @@ const FamilyMemberList = () => {
       <FamilyMemberDialog
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
-        onSave={onSaveMember}
+        onSave={handleSaveMember}
         member={selectedMember}
       />
     </div>

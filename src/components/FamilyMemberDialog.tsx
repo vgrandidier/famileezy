@@ -1,21 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Upload, Euro, Loader2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useLanguage } from '@/context/LanguageContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import ImageCropper from './ImageCropper';
 import { useToast } from '@/hooks/use-toast';
+import MemberPhotoUploader from './MemberPhotoUploader';
 import { featuresData } from '@/pages/FeaturePage';
 
 // Définir le type TypeScript pour les permissions de modules
@@ -79,14 +77,8 @@ const FamilyMemberDialog = ({
   // S'assurer que les traductions sont chargées
   const { t } = useLanguage();
   const { toast } = useToast();
-  const [isUploading, setIsUploading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
   const [activeTab, setActiveTab] = useState('personal');
-  
-  // États pour la gestion du recadrage d'image
-  const [showCropper, setShowCropper] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   
   // Valeurs par défaut pour les permissions de modules d'un enfant
   const defaultModulePermissions = {
@@ -194,74 +186,13 @@ const FamilyMemberDialog = ({
     }
   };
   
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
-  };
-  
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handlePhotoUpdated = (url: string) => {
+    form.setValue('profilePicture', url);
     
-    // Valider que c'est bien une image
-    if (!file.type.startsWith('image/')) {
-      toast({
-        title: "Format invalide",
-        description: "Veuillez sélectionner une image.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    setSelectedFile(file);
-    setShowCropper(true);
-    
-    // Statut pour lecteurs d'écran
-    const statusElement = document.getElementById('family-member-photo-status');
-    if (statusElement) {
-      statusElement.textContent = "Recadrage d'image ouvert";
-    }
-  };
-  
-  const handleCropComplete = async (croppedImageUrl: string, croppedBlob: Blob) => {
-    try {
-      setIsUploading(true);
-      
-      // Statut pour lecteurs d'écran
-      const statusElement = document.getElementById('family-member-photo-status');
-      if (statusElement) {
-        statusElement.textContent = "Chargement de la photo en cours";
-      }
-      
-      // Dans un cas réel, il faudrait uploader l'image au serveur
-      // Pour notre démo, nous utilisons directement l'URL du blob
-      form.setValue('profilePicture', croppedImageUrl);
-      
-      toast({
-        title: "Photo ajoutée",
-        description: "La photo de profil a été mise à jour avec succès.",
-      });
-      
-      // Mise à jour du statut pour les lecteurs d'écran
-      if (statusElement) {
-        statusElement.textContent = "Photo téléchargée avec succès";
-      }
-      
-    } catch (error) {
-      toast({
-        title: "Échec de l'upload",
-        description: "Un problème est survenu lors de l'ajout de la photo.",
-        variant: "destructive",
-      });
-      
-      // Mise à jour du statut pour les lecteurs d'écran
-      const statusElement = document.getElementById('family-member-photo-status');
-      if (statusElement) {
-        statusElement.textContent = "Erreur lors du téléchargement de la photo";
-      }
-      
-    } finally {
-      setIsUploading(false);
-    }
+    toast({
+      title: "Photo mise à jour",
+      description: "La photo de profil a été mise à jour avec succès.",
+    });
   };
   
   // Gestion des raccourcis clavier pour la boîte de dialogue
@@ -299,52 +230,21 @@ const FamilyMemberDialog = ({
                 
                 <TabsContent value="personal" className="space-y-4 pt-4">
                   <div className="flex flex-col items-center justify-center">
-                    <div className="relative mb-2">
-                      <Avatar className="h-24 w-24">
-                        <AvatarImage 
-                          src={form.watch('profilePicture')} 
-                          alt="Photo de profil du membre"
-                        />
-                        <AvatarFallback className="bg-muted" aria-hidden="true">
-                          {form.watch('firstName')?.charAt(0) || ''}
-                          {form.watch('lastName')?.charAt(0) || ''}
-                        </AvatarFallback>
-                      </Avatar>
-                      {isUploading ? (
-                        <div 
-                          className="absolute bottom-0 right-0 rounded-full bg-white p-1 shadow"
-                          aria-label="Chargement en cours"
-                        >
-                          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-                        </div>
-                      ) : (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon"
-                          className="absolute bottom-0 right-0 rounded-full"
-                          onClick={triggerFileInput}
-                          aria-label="Changer la photo"
-                        >
-                          <Upload className="h-4 w-4" aria-hidden="true" />
-                        </Button>
-                      )}
-                      <input
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleFileSelect}
-                        accept="image/*"
-                        className="hidden"
-                        aria-label="Sélectionner une photo"
-                        tabIndex={-1}
+                    {member?.id ? (
+                      <MemberPhotoUploader 
+                        memberId={member.id}
+                        currentPhotoUrl={form.watch('profilePicture')}
+                        firstName={form.watch('firstName')}
+                        lastName={form.watch('lastName')}
+                        onPhotoUpdated={handlePhotoUpdated}
                       />
-                    </div>
-                    <span 
-                      className="text-xs text-muted-foreground"
-                      aria-hidden="true"
-                    >
-                      Cliquez sur l'icône pour changer la photo
-                    </span>
+                    ) : (
+                      <div className="text-center mb-4">
+                        <p className="text-sm text-muted-foreground">
+                          Enregistrez d'abord le membre pour pouvoir ajouter une photo.
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                   <FormField
@@ -462,10 +362,6 @@ const FamilyMemberDialog = ({
                                   placeholder="Montant"
                                   aria-labelledby="pocket-money-label"
                                 />
-                                <Euro 
-                                  className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" 
-                                  aria-hidden="true"
-                                />
                               </div>
                             </FormControl>
                             <FormMessage aria-live="assertive" />
@@ -571,14 +467,6 @@ const FamilyMemberDialog = ({
           </Form>
         </DialogContent>
       </Dialog>
-      
-      {/* Composant de recadrage d'image */}
-      <ImageCropper
-        open={showCropper}
-        onClose={() => setShowCropper(false)}
-        imageFile={selectedFile}
-        onCropComplete={handleCropComplete}
-      />
     </>
   );
 };
