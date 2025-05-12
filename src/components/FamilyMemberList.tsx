@@ -185,7 +185,7 @@ const FamilyMemberList = () => {
             key={member.id}
             className="flex flex-col sm:flex-row items-center gap-4 p-4 bg-white rounded-lg shadow-sm border"
           >
-            <Avatar className="h-16 w-16">
+            <Avatar className="h-14 w-14">
               <AvatarImage src={member.profilePicture} />
               <AvatarFallback>
                 {member.firstName.charAt(0)}{member.lastName.charAt(0)}
@@ -193,17 +193,18 @@ const FamilyMemberList = () => {
             </Avatar>
 
             <div className="flex-grow text-center sm:text-left">
-              <h3 className="font-semibold">
+              {/* MODIFIÉ: Réduire la taille des noms et prénoms */}
+              <h3 className="text-base font-medium">
                 {member.firstName} {member.lastName}
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {member.profile === 'parent' ? 'Parent' : 'Enfant'}
               </p>
               {member.email && (
-                <p className="text-sm text-muted-foreground">{member.email}</p>
+                <p className="text-xs text-muted-foreground">{member.email}</p>
               )}
               {member.profile === 'child' && member.pocketMoney && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   Argent de poche : {member.pocketMoney}€ {member.pocketMoneyFrequency === 'weekly' ? 'par semaine' : 'par mois'}
                 </p>
               )}

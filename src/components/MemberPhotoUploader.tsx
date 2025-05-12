@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Upload, Loader2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import ImageCropper from './ImageCropper';
+import { uploadCroppedFamilyMemberPhoto } from '@/services/familyService';
 
 interface MemberPhotoUploaderProps {
   memberId: string;
@@ -56,12 +57,12 @@ const MemberPhotoUploader = ({
     try {
       setIsUploading(true);
       
-      // Dans une vraie application, on uploadrait ici l'image recadrée vers Firebase
-      // Mais pour simplifier et éviter les problèmes, on utilise directement l'URL du blob
+      // Utiliser le service pour uploader l'image vers Firebase Storage
+      const firebaseUrl = await uploadCroppedFamilyMemberPhoto(memberId, croppedBlob);
       
-      // Notifier le parent du changement avec l'URL du blob
+      // Mettre à jour l'état local avec l'URL Firebase (pas l'URL du blob local)
       if (onPhotoUpdated) {
-        onPhotoUpdated(croppedImageUrl);
+        onPhotoUpdated(firebaseUrl);
       }
       
       // Notification de succès
@@ -77,7 +78,7 @@ const MemberPhotoUploader = ({
       console.error("Erreur lors du traitement de l'image:", error);
       toast({
         title: "Échec du traitement",
-        description: "Un problème est survenu. Veuillez réessayer.",
+        description: "Un problème est survenu lors de l'envoi de la photo vers le serveur. Veuillez réessayer.",
         variant: "destructive",
       });
     } finally {

@@ -250,31 +250,6 @@ export const uploadProfilePicture = async (
 };
 
 /**
- * Télécharge une photo de profil déjà recadrée
- */
-export const uploadCroppedProfilePicture = async (
-  userId: string, 
-  croppedBlob: Blob,
-  originalFileName: string = 'cropped.jpg'
-): Promise<string> => {
-  try {
-    console.log("Début de l'upload de la photo recadrée");
-    
-    // 1. Convertir le Blob en File
-    const fileExtension = originalFileName.split('.').pop() || 'jpg';
-    const file = new File([croppedBlob], `profile_${Date.now()}.${fileExtension}`, {
-      type: croppedBlob.type || 'image/jpeg',
-    });
-    
-    // 2. Utiliser la fonction standard pour terminer l'upload
-    return await uploadProfilePicture(userId, file);
-  } catch (error) {
-    console.error("Erreur lors du téléchargement de l'image recadrée:", error);
-    throw error;
-  }
-};
-
-/**
  * Envoie un email de réinitialisation de mot de passe
  */
 export const sendPasswordReset = async (email: string): Promise<void> => {
@@ -305,6 +280,31 @@ export const getCurrentUser = async (): Promise<UserProfile | null> => {
     return null;
   } catch (error) {
     console.error("Erreur lors de la récupération du profil utilisateur:", error);
+    throw error;
+  }
+};
+
+/**
+ * Télécharge une photo de profil déjà recadrée
+ */
+export const uploadCroppedProfilePicture = async (
+  userId: string, 
+  croppedBlob: Blob,
+  originalFileName: string = 'cropped.jpg'
+): Promise<string> => {
+  try {
+    console.log("Début de l'upload de la photo recadrée");
+    
+    // 1. Convertir le Blob en File
+    const fileExtension = originalFileName.split('.').pop() || 'jpg';
+    const file = new File([croppedBlob], `profile_${Date.now()}.${fileExtension}`, {
+      type: croppedBlob.type || 'image/jpeg',
+    });
+    
+    // 2. Utiliser la fonction standard pour terminer l'upload
+    return await uploadProfilePicture(userId, file);
+  } catch (error) {
+    console.error("Erreur lors du téléchargement de l'image recadrée:", error);
     throw error;
   }
 };

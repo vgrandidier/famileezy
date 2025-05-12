@@ -1,3 +1,4 @@
+// Modification du FamilyDrawer.tsx
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import FamilyMemberList from './FamilyMemberList';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useFamily } from '@/context/FamilyContext';
-import { PlusCircle, UserPlus } from 'lucide-react';
+import { PlusCircle, UserPlus, ChevronDown } from 'lucide-react';
 
 interface FamilyDrawerProps {
   open: boolean;
@@ -52,26 +53,31 @@ const FamilyDrawer = ({ open, onOpenChange }: FamilyDrawerProps) => {
         </SheetHeader>
         
         <div className="pr-6">
-          {/* Sélecteur de famille (si plusieurs familles) */}
+          {/* Sélecteur de famille (si plusieurs familles) - MODIFIÉ */}
           {families.length > 0 && (
             <div className="mb-6">
               <label className="block text-sm font-medium mb-2">Sélectionner une famille</label>
-              <select 
-                className="w-full p-2 border rounded-md"
-                value={currentFamily?.id || ''}
-                onChange={(e) => {
-                  const selectedFamily = families.find(f => f.id === e.target.value);
-                  if (selectedFamily) {
-                    setCurrentFamily(selectedFamily);
-                  }
-                }}
-              >
-                {families.map(family => (
-                  <option key={family.id} value={family.id}>
-                    {family.name}
-                  </option>
-                ))}
-              </select>
+              <div className="relative w-full">
+                <select 
+                  className="w-full p-2 pr-10 border rounded-md appearance-none bg-white"
+                  value={currentFamily?.id || ''}
+                  onChange={(e) => {
+                    const selectedFamily = families.find(f => f.id === e.target.value);
+                    if (selectedFamily) {
+                      setCurrentFamily(selectedFamily);
+                    }
+                  }}
+                >
+                  {families.map(family => (
+                    <option key={family.id} value={family.id}>
+                      {family.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <ChevronDown className="h-4 w-4 text-gray-500" />
+                </div>
+              </div>
             </div>
           )}
           
